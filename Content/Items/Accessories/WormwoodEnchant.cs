@@ -2,6 +2,10 @@ using FargowiltasSouls.Content.Items.Accessories.Enchantments;
 
 using Microsoft.Xna.Framework;
 
+using SOTS.Items.Nature;
+
+using Terraria;
+using Terraria.ID;
 using Terraria.Localization;
 
 namespace BereftSouls.Content.Items.Accessories;
@@ -16,4 +20,27 @@ internal sealed class WormwoodEnchant : BaseEnchant
     public override LocalizedText Tooltip => base.Tooltip.WithFormatArgs(
         defense_boost
     );
+
+    public override void SetDefaults()
+    {
+        base.SetDefaults();
+
+        Item.rare  = ItemRarityID.Blue;
+        Item.value = Item.sellPrice(gold: 5);
+    }
+
+    public override void AddRecipes()
+    {
+        base.AddRecipes();
+
+        CreateRecipe()
+           .AddIngredient<NatureWreath>()
+           .AddIngredient<NatureShirt>()
+           .AddIngredient<NatureLeggings>()
+           .AddIngredient<BotanicalSymbiote>()
+           .AddIngredient<NatureSpell>()
+           .AddIngredient(ItemID.EmeraldStaff)
+           .AddTile(TileID.DemonAltar)
+           .Register();
+    }
 }
