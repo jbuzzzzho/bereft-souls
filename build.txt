@@ -1,0 +1,5 @@
+displayName = The Bereft Souls
+author = The Bereft Souls Development Team
+version = 1.0.0
+
+weakReferences =
