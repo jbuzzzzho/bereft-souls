@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <Import Condition="Exists('..\tModLoader.targets')" Project="..\tModLoader.targets"/>
     <Import Condition="Exists('..\..\..\tModLoader.targets')" Project="..\..\..\tModLoader.targets"/>
