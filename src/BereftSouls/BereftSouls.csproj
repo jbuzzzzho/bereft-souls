@@ -16,4 +16,8 @@
         <Reference Include="lib\**"/>
     </ItemGroup>
 
+    <ItemGroup>
+        <ProjectReference Include="..\FargosSotsPyramid\FargosSotsPyramid.csproj"/>
+    </ItemGroup>
+
 </Project>
