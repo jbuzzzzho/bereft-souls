@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-    <Import Project="..\..\..\tModLoader.targets"/>
+    <Import Condition="Exists('..\tModLoader.targets')" Project="..\tModLoader.targets"/>
+    <Import Condition="Exists('..\..\..\tModLoader.targets')" Project="..\..\..\tModLoader.targets"/>
 
     <PropertyGroup>
         <LangVersion>latest</LangVersion>
