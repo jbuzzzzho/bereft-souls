@@ -4,4 +4,3 @@ This mod merges the Secrets of the Shadows and Fargo's Souls pyramid structures 
 - The additional Fargo's room has been reworked to spawn as a room in the SotS pyramid.
 - All normal SotS content within the pyramid (loot, NPCs) are inaccessible until the world evil boss has been defeated instead of using a key as a progression lock.
 - The Pharaoh's Curse debuff is no longer inflicted when within the pyramid.
-- Pyramid blocks are allowed to be broken at all times.

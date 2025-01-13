@@ -44,3 +44,30 @@ internal sealed class PyramidSystem : ModSystem
         }
     }
 }
+
+// The original plan was to allow tiles to be broken whenever, but we should
+// treat it like the dungeon.
+/*
+[UsedImplicitly(ImplicitUseKindFlags.InstantiatedWithFixedConstructorSignature)]
+internal sealed class PyramidGlobalTile : GlobalTile
+{
+    private static readonly Lazy<int[]> pyramid_tiles = new(
+        () =>
+        [
+            ModContent.TileType<PyramidSlabTile>(),
+            ModContent.TileType<PyramidRubbleTile>(),
+            ModContent.TileType<OvergrownPyramidTile>(),
+        ]
+    );
+
+    public override bool Slope(int i, int j, int type)
+    {
+        return pyramid_tiles.Value.Contains(type) || base.Slope(i, j, type);
+    }
+
+    public override bool CanKillTile(int i, int j, int type, ref bool blockDamaged)
+    {
+        return pyramid_tiles.Value.Contains(type) || base.CanKillTile(i, j, type, ref blockDamaged);
+    }
+}
+*/
