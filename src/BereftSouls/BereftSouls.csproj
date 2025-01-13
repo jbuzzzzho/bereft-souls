@@ -16,4 +16,8 @@
         <Reference Include="lib\**"/>
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Localization\" />
+    </ItemGroup>
+
 </Project>
