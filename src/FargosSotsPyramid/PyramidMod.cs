@@ -1,8 +1,18 @@
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 
 using JetBrains.Annotations;
 
+using Mono.Cecil.Cil;
+
+using MonoMod.Cil;
+using MonoMod.RuntimeDetour;
+
+using SOTS.Items.Pyramid;
+using SOTS.WorldgenHelpers;
+
+using Terraria;
 using Terraria.ModLoader;
 using Terraria.WorldBuilding;
 
@@ -14,6 +24,49 @@ public sealed class PyramidMod;
 [UsedImplicitly(ImplicitUseKindFlags.InstantiatedWithFixedConstructorSignature)]
 internal sealed class PyramidSystem : ModSystem
 {
+    private ILHook? pyramidGateHook;
+
+    public override void Load()
+    {
+        base.Load();
+
+        pyramidGateHook = new ILHook(
+            typeof(PyramidWorldgenHelper).GetMethod(nameof(PyramidWorldgenHelper.GenerateSOTSPyramid), BindingFlags.Public | BindingFlags.Static)!,
+            GenerateSotsPyramid_RemovePyramidGate
+        );
+    }
+
+    public override void Unload()
+    {
+        base.Unload();
+
+        pyramidGateHook?.Dispose();
+        pyramidGateHook = null;
+    }
+
+    private static void GenerateSotsPyramid_RemovePyramidGate(ILContext il)
+    {
+        var c = new ILCursor(il);
+
+        c.GotoNext(
+            MoveType.After,
+            x => x.MatchCall(
+                typeof(ModContent).GetMethod(nameof(ModContent.TileType), BindingFlags.Public | BindingFlags.Static)!
+                                  .MakeGenericMethod(typeof(PyramidGateTile))
+            )
+        );
+
+        c.GotoNext(MoveType.Before, x => x.MatchCall<WorldGen>(nameof(WorldGen.PlaceTile)));
+        c.Remove();
+        c.Emit(OpCodes.Pop); // 7 parameters in PlaceTile.
+        c.Emit(OpCodes.Pop);
+        c.Emit(OpCodes.Pop);
+        c.Emit(OpCodes.Pop);
+        c.Emit(OpCodes.Pop);
+        c.Emit(OpCodes.Pop);
+        // c.Emit(OpCodes.Pop); // Omit one that remains from popping the return value of PlaceTile.
+    }
+
     public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight)
     {
         base.ModifyWorldGenTasks(tasks, ref totalWeight);
