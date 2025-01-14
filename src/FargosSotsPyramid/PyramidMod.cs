@@ -9,6 +9,8 @@ using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using MonoMod.RuntimeDetour;
 
+using SOTS;
+using SOTS.Common.GlobalNPCs;
 using SOTS.Items.Pyramid;
 using SOTS.WorldgenHelpers;
 
@@ -25,6 +27,7 @@ public sealed class PyramidMod;
 internal sealed class PyramidSystem : ModSystem
 {
     private ILHook? pyramidGateHook;
+    private ILHook? disableEarlyPyramidSpawns;
 
     public override void Load()
     {
@@ -34,6 +37,11 @@ internal sealed class PyramidSystem : ModSystem
             typeof(PyramidWorldgenHelper).GetMethod(nameof(PyramidWorldgenHelper.GenerateSOTSPyramid), BindingFlags.Public | BindingFlags.Static)!,
             GenerateSotsPyramid_RemovePyramidGate
         );
+
+        disableEarlyPyramidSpawns = new ILHook(
+            typeof(SOTSNPCs).GetMethod(nameof(SOTSNPCs.EditSpawnPool), BindingFlags.Public | BindingFlags.Instance)!,
+            EditSpawnPool_DisableZonePyramidSpawnsEarly
+        );
     }
 
     public override void Unload()
@@ -42,6 +50,8 @@ internal sealed class PyramidSystem : ModSystem
 
         pyramidGateHook?.Dispose();
         pyramidGateHook = null;
+        disableEarlyPyramidSpawns?.Dispose();
+        disableEarlyPyramidSpawns = null;
     }
 
     private static void GenerateSotsPyramid_RemovePyramidGate(ILContext il)
@@ -65,6 +75,20 @@ internal sealed class PyramidSystem : ModSystem
         c.Emit(OpCodes.Pop);
         c.Emit(OpCodes.Pop);
         // c.Emit(OpCodes.Pop); // Omit one that remains from popping the return value of PlaceTile.
+    }
+
+    private static void EditSpawnPool_DisableZonePyramidSpawnsEarly(ILContext il)
+    {
+        var c = new ILCursor(il);
+
+        // Very simple check that that modifies handling of PyramidBiome in the
+        // method to only be true if the world evil boss has been defeated.
+        // This is to prevent NPCs from spawning early if the player is there to
+        // fight the Fargo's boss.
+        c.GotoNext(MoveType.After, x => x.MatchCallvirt<SOTSPlayer>("get_PyramidBiome"));
+        c.EmitDelegate(
+            (bool pyramidBiome) => NPC.downedBoss2 && pyramidBiome
+        );
     }
 
     public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight)
