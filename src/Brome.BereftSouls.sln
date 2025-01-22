@@ -7,13 +7,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BereftSouls", "BereftSouls\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FargosSotsPyramid", "FargosSotsPyramid\FargosSotsPyramid.csproj", "{2BEB69C1-6A49-4B01-AFB0-5FD181C22E24}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PackBuilder", "PackBuilder\PackBuilder.csproj", "{C4E54FCE-2FE1-4414-BAC7-ED028428ADE1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{031D99D1-7714-4C5E-9AEF-6893320BCBFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -24,5 +23,12 @@ Global
 		{2BEB69C1-6A49-4B01-AFB0-5FD181C22E24}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2BEB69C1-6A49-4B01-AFB0-5FD181C22E24}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2BEB69C1-6A49-4B01-AFB0-5FD181C22E24}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C4E54FCE-2FE1-4414-BAC7-ED028428ADE1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4E54FCE-2FE1-4414-BAC7-ED028428ADE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C4E54FCE-2FE1-4414-BAC7-ED028428ADE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C4E54FCE-2FE1-4414-BAC7-ED028428ADE1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 EndGlobal

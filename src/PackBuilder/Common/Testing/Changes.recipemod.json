@@ -1,0 +1,20 @@
+{
+  "Criteria": "All",
+
+  "Conditions": {
+    "CreatesItem": {
+      "Item": "Terraria/Zenith"
+    }
+  },
+
+  "Changes": {
+    "AddIngredient": {
+      "Item": "Terraria/Gel",
+      "Count": 5
+    },
+    "AddIngredient": {
+      "Item": "Terraria/StoneBlock",
+      "Count": 5
+    }
+  }
+}
