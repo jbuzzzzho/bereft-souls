@@ -21,8 +21,15 @@ cd path/to/tModLoader/ModSources/
 git clone https://github.com/bereft-souls/bereft-souls # You can keep the name as `bereft-souls`
 
 # 2. Run the generate-symlinks.js script.
-cd bereft-souls
-node ./generate-symlinks.js # If you are on Windows, do this with administrator privileges; symlinks require elevation on Windows.
+# First, make sure you have node.js downloaded.
+# https://nodejs.org/en/download
+#
+# If you are on Windows, you can simply run the the generate-symlinks.bat script.
+# This will ask for administrator privileges; symlinks require elevation on Windows.
+#
+# Otherwise, open a terminal and run the following commands:
+cd bereft-souls/src
+node ./generate-symlinks.js
 
 # 3. The project should now be buildable.
 dotnet build src/BereftSouls/BereftSouls.csproj -c Release
