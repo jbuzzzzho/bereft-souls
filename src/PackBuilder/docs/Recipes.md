@@ -87,7 +87,7 @@ Now we have configured our modification to change every recipe that results in t
 
 ![image](https://github.com/user-attachments/assets/1b37fcd0-d27e-470a-97cb-7146f7cfd503)
 
-And just like that, we're done! If you head into the game and check all recipes for the Zenith using the Recipe Browser mod, you should now see that they all have the added reqeuirement of 5 gel.
+And just like that, we're done! If you head into the game and check all recipes for the Zenith using the Recipe Browser mod, you should now see that they all have the added requirement of 5 gel.
 
 ![image](https://github.com/user-attachments/assets/b362b2df-7d7e-4180-95c9-44f1143664ac)
 
