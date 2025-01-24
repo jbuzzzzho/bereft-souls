@@ -3,7 +3,7 @@ tPackBuilder adds support for dynamically modifying recipes to add, remove, or c
 
 All you need to do is add a `.recipemod.json` file to your mod's folder, add the required data, and tPackBuilder handles the rest!
 
-> Quick link to [avilable conditions/changes](https://github.com/bereft-souls/bereft-souls/edit/master/src/PackBuilder/docs/Recipes.md#available-conditionschanges) at the bottom.
+> Quick link to [avilable conditions/changes](https://github.com/bereft-souls/bereft-souls/blob/master/src/PackBuilder/docs/Recipes.md#available-conditionschanges) at the bottom.
 
 ## Pre-requisites
 
