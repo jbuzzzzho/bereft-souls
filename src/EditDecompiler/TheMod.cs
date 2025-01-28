@@ -165,7 +165,7 @@ public static class TheDecompiler
         var metadataFile = GetMetadataFileForIlContext(il);
 
         var decompiler = new CSharpDecompiler(metadataFile, assembly_resolver, new DecompilerSettings());
-        decompiler.AstTransforms.Add(new EscapeInvalidIdentifiers());
+        // decompiler.AstTransforms.Add(new EscapeInvalidIdentifiers());
 
         // var fullTypeName = new FullTypeName(il.Method.DeclaringType.FullName.Replace('/', '+'));
         var type = decompiler.TypeSystem.MainModule.TypeDefinitions.FirstOrDefault(x => x.FullName == il.Method.DeclaringType.FullName); // .GetTypeDefinition(fullTypeName);
