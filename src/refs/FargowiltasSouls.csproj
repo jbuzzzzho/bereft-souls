@@ -14,10 +14,13 @@
         <Compile Include="FargowiltasSouls/**/*.cs">
             <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
         </Compile>
+        <Compile Remove="FargowiltasSouls/Folders to Port/**"/>
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="Fargowiltas.csproj"/>
         <ProjectReference Include="Luminance.csproj"/>
+        <ProjectReference Include="StructureHelper.csproj"/>
     </ItemGroup>
 
 </Project>

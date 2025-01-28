@@ -13,3 +13,6 @@
 [submodule "src/refs/Luminance"]
 	path = src/refs/Luminance
 	url = https://github.com/LucilleKarma/Luminance.git
+[submodule "src/refs/StructureHelper"]
+	path = src/refs/StructureHelper
+	url = https://github.com/ScalarVector1/StructureHelper
