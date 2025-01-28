@@ -16,4 +16,6 @@
         </Compile>
     </ItemGroup>
 
+    <Target Name="BuildMod"/>
+
 </Project>

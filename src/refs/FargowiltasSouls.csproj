@@ -23,4 +23,6 @@
         <ProjectReference Include="StructureHelper.csproj"/>
     </ItemGroup>
 
+    <Target Name="BuildMod"/>
+
 </Project>
