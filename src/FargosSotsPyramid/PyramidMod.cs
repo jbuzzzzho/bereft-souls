@@ -1,3 +1,4 @@
+using System;
 using System.Reflection;
 
 using FargowiltasSouls.Core.Systems;
@@ -10,6 +11,7 @@ using MonoMod.Cil;
 using MonoMod.RuntimeDetour;
 
 using SOTS;
+using SOTS.Biomes;
 using SOTS.Common.GlobalNPCs;
 using SOTS.Items.Pyramid;
 using SOTS.WorldgenHelpers;
@@ -25,9 +27,10 @@ public sealed class PyramidMod;
 [UsedImplicitly(ImplicitUseKindFlags.InstantiatedWithFixedConstructorSignature)]
 internal sealed class PyramidSystem : ModSystem
 {
-    private ILHook? pyramidGateHook;
-    private ILHook? disableEarlyPyramidSpawns;
-    private ILHook? disableFargosPyramidGen;
+    private IDisposable? pyramidGateHook;
+    private IDisposable? disableEarlyPyramidSpawns;
+    private IDisposable? disableFargosPyramidGen;
+    private IDisposable? disablePyramidBiomeBeforeEvilBoss;
 
     public override void Load()
     {
@@ -47,18 +50,29 @@ internal sealed class PyramidSystem : ModSystem
             typeof(PyramidGenSystem).GetMethod(nameof(PyramidGenSystem.ModifyWorldGenTasks), BindingFlags.Public | BindingFlags.Instance)!,
             ModifyWorldGenTasks_DisableFargosPyramidGen
         );
+
+        disablePyramidBiomeBeforeEvilBoss = new Hook(
+            typeof(PyramidBiome).GetMethod(nameof(PyramidBiome.IsBiomeActive), BindingFlags.Public | BindingFlags.Instance)!,
+            IsBiomeActive_DisablePyramidBiomeBeforeEvilBoss
+        );
     }
 
     public override void Unload()
     {
         base.Unload();
 
-        pyramidGateHook?.Dispose();
-        pyramidGateHook = null;
-        disableEarlyPyramidSpawns?.Dispose();
-        disableEarlyPyramidSpawns = null;
-        disableFargosPyramidGen?.Dispose();
-        disableFargosPyramidGen = null;
+        DisposeOf(ref pyramidGateHook);
+        DisposeOf(ref disableEarlyPyramidSpawns);
+        DisposeOf(ref disableFargosPyramidGen);
+        DisposeOf(ref disablePyramidBiomeBeforeEvilBoss);
+
+        return;
+
+        static void DisposeOf(ref IDisposable? disposable)
+        {
+            disposable?.Dispose();
+            disposable = null;
+        }
     }
 
     // ReSharper disable once InconsistentNaming
@@ -108,5 +122,15 @@ internal sealed class PyramidSystem : ModSystem
         c.GotoNext(MoveType.After, x => x.MatchCall<PyramidGenSystem>("get_ShouldGenerateArena"));
         c.Emit(OpCodes.Pop);
         c.Emit(OpCodes.Ldc_I4_0);
+    }
+
+    // ReSharper disable once InconsistentNaming
+    private static bool IsBiomeActive_DisablePyramidBiomeBeforeEvilBoss(
+        Func<PyramidBiome, Player, bool> orig,
+        PyramidBiome                     self,
+        Player                           player
+    )
+    {
+        return NPC.downedBoss2 && orig(self, player);
     }
 }
