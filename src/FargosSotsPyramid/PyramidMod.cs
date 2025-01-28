@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using System.Reflection;
 
 using FargowiltasSouls.Core.Systems;
@@ -12,14 +10,12 @@ using MonoMod.Cil;
 using MonoMod.RuntimeDetour;
 
 using SOTS;
-using SOTS.Buffs;
 using SOTS.Common.GlobalNPCs;
 using SOTS.Items.Pyramid;
 using SOTS.WorldgenHelpers;
 
 using Terraria;
 using Terraria.ModLoader;
-using Terraria.WorldBuilding;
 
 namespace FargosSotsPyramid;
 
@@ -112,21 +108,5 @@ internal sealed class PyramidSystem : ModSystem
         c.GotoNext(MoveType.After, x => x.MatchCall<PyramidGenSystem>("get_ShouldGenerateArena"));
         c.Emit(OpCodes.Pop);
         c.Emit(OpCodes.Ldc_I4_0);
-    }
-}
-
-[UsedImplicitly(ImplicitUseKindFlags.InstantiatedWithFixedConstructorSignature)]
-internal sealed class PyramidPlayer : ModPlayer
-{
-    public override void PreUpdateBuffs()
-    {
-        base.PreUpdateBuffs();
-
-        Player.buffImmune[ModContent.BuffType<PharaohsCurse>()] = true;
-    }
-
-    public override void PostUpdateBuffs()
-    {
-        base.PostUpdateBuffs();
     }
 }
