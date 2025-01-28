@@ -1,5 +1,8 @@
+<img src="icon.png" align="right" width="80" height="80" />
+
 # tPackBuilder
-![readme_icon](https://github.com/user-attachments/assets/74958a5f-036a-4e3d-b5c3-21f181fc79df)
+
+---
 
 tPackBuilder is a library mod designed to make it easy to build your own modpacks with little to no coding experience required!
 The majority of the mod's features can be accessed and utilized through simply adding .json files to your mod project.
