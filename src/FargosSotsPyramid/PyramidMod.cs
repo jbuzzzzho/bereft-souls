@@ -191,7 +191,7 @@ internal sealed class TemporaryClassForModifyingTheStructure : ModSystem
                 {
                     if (type == TileID.SandstoneBrick)
                     {
-                        type = ModContent.TileType<PyramidBrickTile>();
+                        type = ModContent.TileType<PyramidSlabTile>();
                     }
 
                     return type;
@@ -201,7 +201,7 @@ internal sealed class TemporaryClassForModifyingTheStructure : ModSystem
                 {
                     if (type == WallID.SandstoneBrick)
                     {
-                        type = ModContent.WallType<UnsafePyramidBrickWallWall>();
+                        type = ModContent.WallType<UnsafePyramidWallWall>();
                     }
 
                     return type;
