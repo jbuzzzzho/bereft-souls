@@ -144,12 +144,16 @@ internal sealed class TemporaryClassForModifyingTheStructure : ModSystem
 {
     private static IDisposable? a;
 
-    public override void Load()
+    public override void PostSetupContent()
     {
-        base.Load();
+        base.PostSetupContent();
 
+        var mod    = ModLoader.GetMod("StructureHelper");
+        var type   = mod.Code.GetType("StructureHelper.Generator")!;
+        var method = type.GetMethod("Generate", BindingFlags.Public | BindingFlags.Static, null, [typeof(TagCompound), typeof(Terraria.DataStructures.Point16), typeof(bool), mod.Code.GetType("StructureHelper.GenFlags")!], null)!;
         a = new ILHook(
-            typeof(StructureHelper.Generator).GetMethod("Generate", BindingFlags.Public | BindingFlags.Static, null, [typeof(TagCompound), typeof(Terraria.DataStructures.Point16), typeof(bool), typeof(StructureHelper.GenFlags)], null)!,
+            // typeof(StructureHelper.Generator).GetMethod("Generate", BindingFlags.Public | BindingFlags.Static, null, [typeof(TagCompound), typeof(Terraria.DataStructures.Point16), typeof(bool), typeof(StructureHelper.GenFlags)], null)!,
+            method,
             il =>
             {
                 var c = new ILCursor(il);
@@ -168,7 +172,7 @@ internal sealed class TemporaryClassForModifyingTheStructure : ModSystem
                 }
 
                 c.GotoNext(x => x.MatchCall<StructureHelper.TileSaveData>("get_Active"));
-                c.GotoNext(MoveType.After, x => x.MatchLdloc(out _));
+                c.GotoNext(MoveType.AfterLabel, x => x.MatchLdloc(out _));
 
                 c.Emit(OpCodes.Ldloc, typeIndex);
                 c.EmitDelegate(ReplaceTileType);
