@@ -1,10 +1,7 @@
 const path = require("path");
 const fs = require("fs");
 
-const dirs = fs.readdirSync(__dirname).filter(function (file) {
-	const entry = path.join(__dirname, file);
-	return !file.startsWith('.') && fs.statSync(entry).isDirectory();
-});
+const dirs = ["BereftSouls", "FargosSotsPyramid", "PackBuilder"];
 
 const sourceDirs = dirs.map((dir) => path.join(__dirname, dir));
 const targetDirs = dirs.map((dir) => path.join(__dirname, "..", "..", dir));
