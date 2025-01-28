@@ -1,6 +1,8 @@
 using System;
 using System.Reflection;
 
+using EditDecompiler;
+
 using FargowiltasSouls.Core.Systems;
 
 using JetBrains.Annotations;
@@ -14,10 +16,13 @@ using SOTS;
 using SOTS.Biomes;
 using SOTS.Common.GlobalNPCs;
 using SOTS.Items.Pyramid;
+using SOTS.Items.Pyramid.PyramidWalls;
 using SOTS.WorldgenHelpers;
 
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
 
 namespace FargosSotsPyramid;
 
@@ -132,5 +137,72 @@ internal sealed class PyramidSystem : ModSystem
     )
     {
         return NPC.downedBoss2 && orig(self, player);
+    }
+}
+
+internal sealed class TemporaryClassForModifyingTheStructure : ModSystem
+{
+    private static IDisposable? a;
+
+    public override void Load()
+    {
+        base.Load();
+
+        a = new ILHook(
+            typeof(StructureHelper.Generator).GetMethod("Generate", BindingFlags.Public | BindingFlags.Static, null, [typeof(TagCompound), typeof(Terraria.DataStructures.Point16), typeof(bool), typeof(StructureHelper.GenFlags)], null)!,
+            il =>
+            {
+                var c = new ILCursor(il);
+
+                var typeIndex = -1;
+                c.GotoNext(x => x.MatchCallvirt<ModBlockType>("get_Type"));
+                c.GotoNext(x => x.MatchStloc(out typeIndex));
+
+                var wallTypeIndex = -1;
+                c.GotoNext(x => x.MatchCallvirt<ModBlockType>("get_Type"));
+                c.GotoNext(x => x.MatchStloc(out wallTypeIndex));
+
+                if (typeIndex == -1 || wallTypeIndex == -1)
+                {
+                    throw new Exception("Failed to find the local variable storing the type of the block.");
+                }
+
+                c.GotoNext(x => x.MatchCall<StructureHelper.TileSaveData>("get_Active"));
+                c.GotoNext(MoveType.After, x => x.MatchLdloc(out _));
+
+                c.Emit(OpCodes.Ldloc, typeIndex);
+                c.EmitDelegate(ReplaceTileType);
+                c.Emit(OpCodes.Stloc, typeIndex);
+
+                c.Emit(OpCodes.Ldloc, wallTypeIndex);
+                c.EmitDelegate(ReplaceWallType);
+                c.Emit(OpCodes.Stloc, wallTypeIndex);
+
+                // MonoModHooks.DumpIL(Mod, il);
+                TheDecompiler.DecompileAndDump(Mod, il);
+
+                return;
+
+                static int ReplaceTileType(int type)
+                {
+                    if (type == TileID.SandstoneBrick)
+                    {
+                        type = ModContent.TileType<PyramidBrickTile>();
+                    }
+
+                    return type;
+                }
+
+                static int ReplaceWallType(int type)
+                {
+                    if (type == WallID.SandstoneBrick)
+                    {
+                        type = ModContent.WallType<UnsafePyramidBrickWallWall>();
+                    }
+
+                    return type;
+                }
+            }
+        );
     }
 }

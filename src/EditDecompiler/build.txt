@@ -1,0 +1,5 @@
+displayName = dump il
+author = tomat
+version = 1.0.0.0
+
+dllReferences = ICSharpCode.Decompiler
