@@ -22,6 +22,7 @@ using MonoMod.Cil;
 
 using Terraria;
 using Terraria.ModLoader;
+using Terraria.ModLoader.Core;
 using Terraria.Utilities;
 
 using IAssemblyResolver = ICSharpCode.Decompiler.Metadata.IAssemblyResolver;
@@ -39,6 +40,41 @@ public static class TheDecompiler
 
         public AssemblyResolver()
         {
+            // TODO: lazy solution, load all mods and their dependencies into
+            //       this alc...
+            foreach (var mod in ModLoader.Mods)
+            {
+                if (mod.Name == "ModLoader")
+                {
+                    continue;
+                }
+
+                try
+                {
+                    var modAsm     = mod.GetFileBytes(mod.Name + ".dll");
+                    var modLibDlls = mod.GetFileNames().Where(x => x.StartsWith("lib/") && x.EndsWith(".dll"));
+                    var modLibs    = modLibDlls.ToDictionary(x => x, x => mod.GetFileBytes(x));
+                    modLibs.Add(mod.Name + ".dll", modAsm);
+
+                    // write to temp files
+                    foreach (var (name, bytes) in modLibs)
+                    {
+                        var path   = CreateDirectory(GetTempPath("dll"));
+                        var stream = new FileStream(path, FileMode.Create, FileAccess.Write);
+                        stream.Write(bytes, 0, bytes.Length);
+                        stream.Dispose();
+
+                        var asm = Assembly.LoadFile(path);
+                        cache.Add(asm.GetName().Name!, [asm]);
+                    }
+                }
+                catch
+                {
+                    // it's OK to fail because not all mods will be loaded
+                    // TODO: fix this
+                }
+            }
+
             var modules = AssemblyLoadContext.All.SelectMany(x => x.Assemblies).DistinctBy(x => x.ManifestModule.FullyQualifiedName).Select(x => x.ManifestModule);
             foreach (var module in modules)
             {
