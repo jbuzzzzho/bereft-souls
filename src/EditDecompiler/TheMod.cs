@@ -118,7 +118,7 @@ public static class TheDecompiler
 
                 try
                 {
-                    if (!string.IsNullOrEmpty(assembly.Location))
+                    if (string.IsNullOrEmpty(assembly.Location))
                     {
                         return null;
                     }
