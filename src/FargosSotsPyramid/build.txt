@@ -3,4 +3,4 @@ author = The Bereft Souls Development Team
 version = 1.0.0.0
 
 weakReferences =
-modReferences = SOTS@0.24.1.4, FargowiltasSouls@1.7.0.12
+modReferences = SOTS@0.24.1.4, FargowiltasSouls@1.7.1.3

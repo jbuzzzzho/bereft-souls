@@ -65,6 +65,7 @@ internal sealed class PyramidSystem : ModSystem
         disableFargosPyramidGen = null;
     }
 
+    // ReSharper disable once InconsistentNaming
     private static void GenerateSotsPyramid_RemovePyramidGate(ILContext il)
     {
         var c = new ILCursor(il);
@@ -88,6 +89,7 @@ internal sealed class PyramidSystem : ModSystem
         // c.Emit(OpCodes.Pop); // Omit one that remains from popping the return value of PlaceTile.
     }
 
+    // ReSharper disable once InconsistentNaming
     private static void EditSpawnPool_DisableZonePyramidSpawnsEarly(ILContext il)
     {
         var c = new ILCursor(il);
@@ -102,6 +104,7 @@ internal sealed class PyramidSystem : ModSystem
         );
     }
 
+    // ReSharper disable once InconsistentNaming
     private static void ModifyWorldGenTasks_DisableFargosPyramidGen(ILContext il)
     {
         var c = new ILCursor(il);

@@ -1,0 +1,15 @@
+[submodule "src/refs/Fargowiltas"]
+	path = src/refs/Fargowiltas
+	url = https://github.com/Fargowilta/Fargowiltas
+[submodule "src/refs/CalamityMod"]
+	path = src/refs/CalamityMod
+	url = https://github.com/CalamityTeam/CalamityModPublic
+[submodule "src/refs/FargowiltasSouls"]
+	path = src/refs/FargowiltasSouls
+	url = https://github.com/Fargowilta/FargowiltasSouls.git
+[submodule "src/refs/SOTS"]
+	path = src/refs/SOTS
+	url = https://github.com/VortexOfRainbows/SOTS
+[submodule "src/refs/Luminance"]
+	path = src/refs/Luminance
+	url = https://github.com/LucilleKarma/Luminance.git
