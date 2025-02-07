@@ -17,7 +17,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\EditDecompiler\EditDecompiler.csproj"/>
         <ProjectReference Include="..\refs\Fargowiltas.csproj"/>
         <ProjectReference Include="..\refs\FargowiltasSouls.csproj"/>
         <ProjectReference Include="..\refs\Luminance.csproj"/>
