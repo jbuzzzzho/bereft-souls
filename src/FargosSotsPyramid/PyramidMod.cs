@@ -1,9 +1,12 @@
 using System;
 using System.Reflection;
 
+using FargowiltasSouls.Content.WorldGeneration;
 using FargowiltasSouls.Core.Systems;
 
 using JetBrains.Annotations;
+
+using Microsoft.Xna.Framework;
 
 using Mono.Cecil.Cil;
 
@@ -31,6 +34,7 @@ internal sealed class PyramidSystem : ModSystem
     private IDisposable? disableEarlyPyramidSpawns;
     private IDisposable? disableFargosPyramidGen;
     private IDisposable? disablePyramidBiomeBeforeEvilBoss;
+    private IDisposable? spawnFargosPyramidBossInSotsRoom;
 
     public override void Load()
     {
@@ -54,6 +58,11 @@ internal sealed class PyramidSystem : ModSystem
         disablePyramidBiomeBeforeEvilBoss = new Hook(
             typeof(PyramidBiome).GetMethod(nameof(PyramidBiome.IsBiomeActive), BindingFlags.Public | BindingFlags.Instance)!,
             IsBiomeActive_DisablePyramidBiomeBeforeEvilBoss
+        );
+
+        spawnFargosPyramidBossInSotsRoom = new Hook(
+            typeof(PyramidWorldgenHelper).GetMethod(nameof(PyramidWorldgenHelper.GenerateBossRoom), BindingFlags.Public | BindingFlags.Static)!,
+            GenerateBossRoom_SpawnFargosBossOnSarcophagus
         );
     }
 
@@ -132,5 +141,18 @@ internal sealed class PyramidSystem : ModSystem
     )
     {
         return NPC.downedBoss2 && orig(self, player);
+    }
+    
+    // ReSharper disable once InconsistentNaming
+    private static void GenerateBossRoom_SpawnFargosBossOnSarcophagus(
+        Action<int, int, int> orig,
+        int                   spawnX,
+        int                   spawnY,
+        int                   direction
+    )
+    {
+        orig(spawnX, spawnY, direction);
+        
+        CoffinArena.SetArenaPosition(new Point(spawnX, spawnY));
     }
 }
