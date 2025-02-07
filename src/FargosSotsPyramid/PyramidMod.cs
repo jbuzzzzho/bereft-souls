@@ -1,6 +1,9 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 
+using FargowiltasSouls.Content.Bosses.CursedCoffin;
 using FargowiltasSouls.Content.WorldGeneration;
 using FargowiltasSouls.Core.Systems;
 
@@ -36,6 +39,8 @@ internal sealed class PyramidSystem : ModSystem
     private IDisposable? disablePyramidBiomeBeforeEvilBoss;
     private IDisposable? spawnFargosPyramidBossInSotsRoom;
 
+    private readonly List<IDisposable> hooksToPatchConstantWidthAndHeight = [];
+
     public override void Load()
     {
         base.Load();
@@ -64,6 +69,37 @@ internal sealed class PyramidSystem : ModSystem
             typeof(PyramidWorldgenHelper).GetMethod(nameof(PyramidWorldgenHelper.GenerateBossRoom), BindingFlags.Public | BindingFlags.Static)!,
             GenerateBossRoom_SpawnFargosBossOnSarcophagus
         );
+
+        // CursedCoffin.SlamWShockwave
+        // CursedCoffin.WavyShotSlam
+        // CursedCoffin.RandomStuff
+        // CursedCoffin.Targeting
+        // CoffinArena.SetArenaPosition
+        // CoffinArena.ClampWithinArena
+        // CoffinArena.ArenaCorners
+        // CoffinArena.TopArenaCorners
+        // CursedCoffin.AI
+        // Need local method Position but I'm lazy
+        // WorldUpdatingSystem.PostUpdateWorld
+        hooksToPatchConstantWidthAndHeight.AddRange(
+            MakeWidthHeightHooks(
+                typeof(CursedCoffin).GetMethod("SlamWShockwave", BindingFlags.NonPublic         | BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static)!,
+                typeof(CursedCoffin).GetMethod("WavyShotSlam",   BindingFlags.NonPublic         | BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static)!,
+                typeof(CursedCoffin).GetMethod("RandomStuff",    BindingFlags.NonPublic         | BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static)!,
+                typeof(CursedCoffin).GetMethod("Targeting",      BindingFlags.NonPublic         | BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static)!,
+                typeof(CoffinArena).GetMethod("SetArenaPosition", BindingFlags.NonPublic        | BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static)!,
+                typeof(CoffinArena).GetMethod("ClampWithinArena", BindingFlags.NonPublic        | BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static)!,
+                typeof(CoffinArena).GetMethod("ArenaCorners",     BindingFlags.NonPublic        | BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static)!,
+                typeof(CoffinArena).GetMethod("TopArenaCorners",  BindingFlags.NonPublic        | BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static)!,
+                typeof(CursedCoffin).GetMethod("AI", BindingFlags.NonPublic                     | BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static)!,
+                typeof(WorldUpdatingSystem).GetMethod("PostUpdateWorld", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static)!
+            )
+        );
+
+        static IEnumerable<ILHook> MakeWidthHeightHooks(params MethodInfo[] methods)
+        {
+            return methods.Select(x => new ILHook(x, PatchConstantWidthAndHeight));
+        }
     }
 
     public override void Unload()
@@ -74,6 +110,14 @@ internal sealed class PyramidSystem : ModSystem
         DisposeOf(ref disableEarlyPyramidSpawns);
         DisposeOf(ref disableFargosPyramidGen);
         DisposeOf(ref disablePyramidBiomeBeforeEvilBoss);
+        DisposeOf(ref spawnFargosPyramidBossInSotsRoom);
+
+        foreach (var hook in hooksToPatchConstantWidthAndHeight)
+        {
+            hook.Dispose();
+        }
+
+        hooksToPatchConstantWidthAndHeight.Clear();
 
         return;
 
@@ -142,7 +186,7 @@ internal sealed class PyramidSystem : ModSystem
     {
         return NPC.downedBoss2 && orig(self, player);
     }
-    
+
     // ReSharper disable once InconsistentNaming
     private static void GenerateBossRoom_SpawnFargosBossOnSarcophagus(
         Action<int, int, int> orig,
@@ -152,7 +196,62 @@ internal sealed class PyramidSystem : ModSystem
     )
     {
         orig(spawnX, spawnY, direction);
-        
+
         CoffinArena.SetArenaPosition(new Point(spawnX, spawnY));
+    }
+
+    private static void PatchConstantWidthAndHeight(ILContext il)
+    {
+        var c = new ILCursor(il);
+
+        while (c.TryGotoNext(MoveType.After, x => x.MatchLdcI4(60)))
+        {
+            c.EmitPop();
+            c.EmitDelegate(GetWidth);
+        }
+
+        c.Index = 0;
+
+        while (c.TryGotoNext(MoveType.After, x => x.MatchLdcI4(35)))
+        {
+            c.EmitPop();
+            c.EmitDelegate(GetHeight);
+        }
+
+        c.Index = 0;
+
+        while (c.TryGotoNext(MoveType.After, x => x.MatchCall("FargowiltasSouls.Content.WorldGeneration.CoffinArena", "get_VectorWidth")))
+        {
+            c.EmitPop();
+            c.EmitDelegate(VectorWidth);
+        }
+
+        c.Index = 0;
+
+        while (c.TryGotoNext(MoveType.After, x => x.MatchCall("FargowiltasSouls.Content.WorldGeneration.CoffinArena", "get_VectorHeight")))
+        {
+            c.EmitPop();
+            c.EmitDelegate(VectorHeight);
+        }
+
+        static int GetWidth()
+        {
+            return 60 + 24 * 2;
+        }
+
+        static int GetHeight()
+        {
+            return 35;
+        }
+
+        static int VectorWidth()
+        {
+            return GetWidth() * 16;
+        }
+
+        static int VectorHeight()
+        {
+            return GetHeight() * 16;
+        }
     }
 }
