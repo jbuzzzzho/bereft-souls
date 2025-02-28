@@ -309,6 +309,7 @@ internal sealed class PyramidChestLocker : ModSystem
             return !NPC.downedBoss2;
         };
 
+        // TODO: Prevent consuming a key?
         On_Chest.Unlock += (orig, x, y) =>
         {
             var tile = Framing.GetTileSafely(x, y);
@@ -324,7 +325,7 @@ internal sealed class PyramidChestLocker : ModSystem
         };
 
         sarcophagusTileRightClick = new Hook(
-            typeof(SarcophagusTile).GetMethod(nameof(SarcophagusTile.RightClick), BindingFlags.Public | BindingFlags.Instance),
+            typeof(SarcophagusTile).GetMethod(nameof(SarcophagusTile.RightClick), BindingFlags.Public | BindingFlags.Instance)!,
             SarcophagusTile_RightClick
         );
     }
