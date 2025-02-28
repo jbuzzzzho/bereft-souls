@@ -284,3 +284,41 @@ internal sealed class PyramidSystem : ModSystem
         }
     }
 }
+
+[UsedImplicitly(ImplicitUseKindFlags.InstantiatedWithFixedConstructorSignature)]
+internal sealed class PyramidChestLocker : GlobalTile
+{
+    // Treat Pyramid Chests as "locked" until the World Evil boss has been
+    // downed to prevent progression skips.  Also prevents interacting with the
+    // Sarcophagus for similar reasons.
+    // TODO: Display a chat message when right-clicking?
+
+    public override void Load()
+    {
+        base.Load();
+
+        On_Chest.IsLocked_int_int_Tile += (orig, x, y, tile) =>
+        {
+            if (tile.TileType != ModContent.TileType<PyramidChestTile>())
+            {
+                return orig(x, y, tile);
+            }
+
+            return !NPC.downedBoss2;
+        };
+
+        On_Chest.Unlock += (orig, x, y) =>
+        {
+            var tile = Framing.GetTileSafely(x, y);
+            if (tile.TileType != ModContent.TileType<PyramidChestTile>())
+            {
+                return orig(x, y);
+            }
+
+            // Refuse any attempts to unlock.  Don't care about downed
+            // conditions since the player shouldn't have an opportunity to try
+            // and unlock the chest once a World Evil boss is downed.
+            return false;
+        };
+    }
+}
