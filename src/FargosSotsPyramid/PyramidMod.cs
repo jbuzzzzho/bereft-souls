@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 
@@ -95,6 +96,32 @@ internal sealed class PyramidSystem : ModSystem
                 typeof(WorldUpdatingSystem).GetMethod("PostUpdateWorld", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static)!
             )
         );
+
+        // Override Cursed Coffin to spawn at a slight offset.
+        On_NPC.NewNPC += (orig, source, i, i1, type, start, ai0, ai1, ai2, ai3, target) =>
+        {
+            if (type != ModContent.NPCType<CursedCoffinInactive>())
+            {
+                return orig(source, i, i1, type, start, ai0, ai1, ai2, ai3, target);
+            }
+            
+            var npcIndex = orig(source, i, i1, type, start, ai0, ai1, ai2, ai3, target);
+            {
+                Debug.Assert(npcIndex >= 0 && npcIndex <= Main.maxNPCs);
+            }
+            
+            var npc = Main.npc[npcIndex];
+            {
+                Debug.Assert(npc.type == ModContent.NPCType<CursedCoffinInactive>());
+            }
+
+            // TODO: I forget if we need to bother syncing this.
+            npc.position -= new Vector2(16f / 2f, 16f * 8f);
+
+            return npcIndex;
+        };
+
+        return;
 
         static IEnumerable<ILHook> MakeWidthHeightHooks(params MethodInfo[] methods)
         {
@@ -233,6 +260,8 @@ internal sealed class PyramidSystem : ModSystem
             c.EmitPop();
             c.EmitDelegate(VectorHeight);
         }
+
+        return;
 
         static int GetWidth()
         {
