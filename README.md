@@ -11,7 +11,8 @@ The majority of the project source lies within here, but some projects (such as 
 
 ## Building
 
-Our compatibility aide directly references various mods whose assemblies are currently provided in the repository. Our approach may change in the future, but this is currently satisfactory.
+Our compatibility aides directly reference various mods. For open-source and source-available mods, we include their source code as submodules in our project tree. For closed-source mods, we embed their assemblies. Our approach may change in the future, but this is currently satisfactory.
+
 
 Since this servers as a monorepository with multiple embedded projects, we have to take an unorthodox approach to making tModLoader understand our project structure:
 
@@ -20,21 +21,9 @@ Since this servers as a monorepository with multiple embedded projects, we have 
 cd path/to/tModLoader/ModSources/
 git clone https://github.com/bereft-souls/bereft-souls # You can keep the name as `bereft-souls`
 
-# 2. Run the generate-symlinks.js script.
-# First, make sure you have node.js downloaded.
-# https://nodejs.org/en/download
-#
-# If you are on Windows, you can simply run the the generate-symlinks.bat script.
-# This will ask for administrator privileges; symlinks require elevation on Windows.
-#
-# Otherwise, open a terminal and run the following commands:
-cd bereft-souls/src
-node ./generate-symlinks.js
+# 2. Update any submodules.
+git submodule update --init --recursive
 
 # 3. The project should now be buildable.
 dotnet build src/BereftSouls/BereftSouls.csproj -c Release
-
-# IDE integration will also work directly if you open the solution or C# project.
-# Refrain from opening the projects from their symlink paths as that's only
-# intended for allowing tModLoader to write localization files and to publish the mod.
 ```
