@@ -104,12 +104,12 @@ internal sealed class PyramidSystem : ModSystem
             {
                 return orig(source, i, i1, type, start, ai0, ai1, ai2, ai3, target);
             }
-            
+
             var npcIndex = orig(source, i, i1, type, start, ai0, ai1, ai2, ai3, target);
             {
                 Debug.Assert(npcIndex >= 0 && npcIndex <= Main.maxNPCs);
             }
-            
+
             var npc = Main.npc[npcIndex];
             {
                 Debug.Assert(npc.type == ModContent.NPCType<CursedCoffinInactive>());
@@ -286,12 +286,14 @@ internal sealed class PyramidSystem : ModSystem
 }
 
 [UsedImplicitly(ImplicitUseKindFlags.InstantiatedWithFixedConstructorSignature)]
-internal sealed class PyramidChestLocker : GlobalTile
+internal sealed class PyramidChestLocker : ModSystem
 {
     // Treat Pyramid Chests as "locked" until the World Evil boss has been
     // downed to prevent progression skips.  Also prevents interacting with the
     // Sarcophagus for similar reasons.
     // TODO: Display a chat message when right-clicking?
+
+    private Hook? sarcophagusTileRightClick;
 
     public override void Load()
     {
@@ -320,5 +322,29 @@ internal sealed class PyramidChestLocker : GlobalTile
             // and unlock the chest once a World Evil boss is downed.
             return false;
         };
+
+        sarcophagusTileRightClick = new Hook(
+            typeof(SarcophagusTile).GetMethod(nameof(SarcophagusTile.RightClick), BindingFlags.Public | BindingFlags.Instance),
+            SarcophagusTile_RightClick
+        );
+    }
+
+    public override void Unload()
+    {
+        base.Unload();
+
+        sarcophagusTileRightClick?.Dispose();
+        sarcophagusTileRightClick = null;
+    }
+
+    // ReSharper disable once InconsistentNaming
+    private static bool SarcophagusTile_RightClick(
+        Func<SarcophagusTile, int, int, bool> orig,
+        SarcophagusTile                       self,
+        int                                   i,
+        int                                   j
+    )
+    {
+        return NPC.downedBoss2 && orig(self, i, j);
     }
 }
