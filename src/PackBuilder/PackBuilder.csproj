@@ -13,11 +13,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Reference Include="lib\**" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<ProjectReference Include="..\FargosSotsPyramid\FargosSotsPyramid.csproj" />
+	  <ProjectReference Include="..\refs\CalamityMod.csproj" />
 	</ItemGroup>
 
 </Project>
