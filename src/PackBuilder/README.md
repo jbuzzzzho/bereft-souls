@@ -13,9 +13,10 @@ The majority of the mod's features can be accessed and utilized through simple `
 
 Currently supported features:
 - Dynamic recipe changes
+- NPC stat changes
 
 Upcoming features:
-- NPC/Item/Projectile stat changes
+- Item/Projectile stat changes
 - Modular quest book, designable from an in-game GUI
 
 ## Documentation
