@@ -1,14 +1,14 @@
 ﻿using Terraria;
 
-namespace PackBuilder.Content.JsonBuilding.Recipes.Conditions
+namespace PackBuilder.Common.JsonBuilding.Recipes.Conditions
 {
-    internal class RequiresIngredient : RecipeCondition
+    internal class RequiresIngredient : IRecipeCondition
     {
         public required string Item;
 
         public int Count = -1;
 
-        public override bool AppliesTo(Recipe recipe)
+        public bool AppliesTo(Recipe recipe)
         {
             int item = GetItem(Item);
 

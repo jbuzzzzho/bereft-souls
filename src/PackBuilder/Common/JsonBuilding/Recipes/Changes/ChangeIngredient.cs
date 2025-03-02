@@ -1,8 +1,8 @@
 ﻿using Terraria;
 
-namespace PackBuilder.Content.JsonBuilding.Recipes.Changes
+namespace PackBuilder.Common.JsonBuilding.Recipes.Changes
 {
-    internal class ChangeIngredient : RecipeChange
+    internal class ChangeIngredient : IRecipeChange
     {
         public required string Item;
 
@@ -10,7 +10,7 @@ namespace PackBuilder.Content.JsonBuilding.Recipes.Changes
 
         public int NewCount = -1;
 
-        public override void ApplyTo(Recipe recipe)
+        public void ApplyTo(Recipe recipe)
         {
             int item = GetItem(Item);
 

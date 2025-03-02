@@ -1,14 +1,14 @@
 ﻿using Terraria;
 
-namespace PackBuilder.Content.JsonBuilding.Recipes.Changes
+namespace PackBuilder.Common.JsonBuilding.Recipes.Changes
 {
-    internal class AddIngredient : RecipeChange
+    internal class AddIngredient : IRecipeChange
     {
         public required string Item;
 
         public int Count = 1;
 
-        public override void ApplyTo(Recipe recipe)
+        public void ApplyTo(Recipe recipe)
         {
             int item = GetItem(Item);
             recipe.AddIngredient(item, Count);

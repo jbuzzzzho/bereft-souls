@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 
-namespace PackBuilder.Content.JsonBuilding.Recipes;
+namespace PackBuilder.Common.JsonBuilding.Recipes;
 
 // Either All or Any.
 // If "All" is specified, ALL of the conditions will need to be met in order to activate the changes of this mod.

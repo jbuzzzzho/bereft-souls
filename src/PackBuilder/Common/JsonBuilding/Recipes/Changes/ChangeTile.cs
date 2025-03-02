@@ -1,17 +1,17 @@
 ﻿using Terraria;
 
-namespace PackBuilder.Content.JsonBuilding.Recipes.Changes
+namespace PackBuilder.Common.JsonBuilding.Recipes.Changes
 {
-    internal class ChangeTile : RecipeChange
+    internal class ChangeTile : IRecipeChange
     {
-        public string OldTile = null;
+        public string Tile = null;
 
-        public required string Tile;
+        public required string NewTile;
 
-        public override void ApplyTo(Recipe recipe)
+        public void ApplyTo(Recipe recipe)
         {
-            int oldTile = OldTile == null ? -1 : GetTile(OldTile);
-            int newTile = GetTile(Tile);
+            int oldTile = Tile == null ? -1 : GetTile(Tile);
+            int newTile = GetTile(NewTile);
 
             if (oldTile == -1)
                 recipe.requiredTile.Clear();

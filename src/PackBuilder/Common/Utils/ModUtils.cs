@@ -3,7 +3,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace PackBuilder.Content.Utils
+namespace PackBuilder.Common.Utils
 {
     internal static partial class ModUtils
     {
@@ -15,6 +15,26 @@ namespace PackBuilder.Content.Utils
             var split = modContent.Split('/');
             mod = split[0];
             content = split[1];
+        }
+
+        /// <summary>
+        /// Gets the ID for an npc based on its content path, accounting for both vanilla and modded entries.
+        /// </summary>
+        public static int GetNPC(string npc)
+        {
+            SplitModContent(npc, out var mod, out var name);
+
+            try
+            {
+                if (mod == "Terraria")
+                    return (short)typeof(NPCID).GetField(name).GetRawConstantValue();
+
+                return ModContent.Find<ModNPC>(mod, name).Type;
+            }
+            catch
+            {
+                throw new ArgumentException($"NPC type \"{npc}\" not found!", nameof(npc));
+            }
         }
 
         /// <summary>

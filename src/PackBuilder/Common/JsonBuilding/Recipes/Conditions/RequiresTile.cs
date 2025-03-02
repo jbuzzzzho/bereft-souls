@@ -1,12 +1,12 @@
 ﻿using Terraria;
 
-namespace PackBuilder.Content.JsonBuilding.Recipes.Conditions
+namespace PackBuilder.Common.JsonBuilding.Recipes.Conditions
 {
-    internal class RequiresTile : RecipeCondition
+    internal class RequiresTile : IRecipeCondition
     {
         public required string Tile;
 
-        public override bool AppliesTo(Recipe recipe)
+        public bool AppliesTo(Recipe recipe)
         {
             int tile = GetTile(Tile);
             return recipe.HasTile(tile);

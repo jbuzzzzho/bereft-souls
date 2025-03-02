@@ -1,8 +1,8 @@
 ﻿using Terraria;
 
-namespace PackBuilder.Content.JsonBuilding.Recipes
+namespace PackBuilder.Common.JsonBuilding.Recipes
 {
-    internal partial class RecipeMod
+    internal class RecipeMod
     {
         // Either All or Any.
         // If "All" is specified, ALL of the conditions will need to be met in order to activate the changes of this mod.
@@ -10,10 +10,10 @@ namespace PackBuilder.Content.JsonBuilding.Recipes
         public RecipeCriteria Criteria { get; set; } = RecipeCriteria.All;
 
         // The condition(s) needing to be met in order for this mod to activate.
-        public RecipeConditions Conditions { get; set; } = null;
+        public required RecipeConditions Conditions { get; set; }
 
         // The change(s) that will be applied to each of the recipes where conditions are met.
-        public RecipeChanges Changes { get; set; } = null;
+        public required RecipeChanges Changes { get; set; }
 
         /// <summary>
         /// Tests conditions and applies this <see cref="RecipeMod"/> to every loaded <see cref="Recipe"/>.

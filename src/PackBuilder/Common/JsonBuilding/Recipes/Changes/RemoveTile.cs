@@ -1,12 +1,12 @@
 ﻿using Terraria;
 
-namespace PackBuilder.Content.JsonBuilding.Recipes.Changes
+namespace PackBuilder.Common.JsonBuilding.Recipes.Changes
 {
-    internal class RemoveTile : RecipeChange
+    internal class RemoveTile : IRecipeChange
     {
         public required string Tile;
 
-        public override void ApplyTo(Recipe recipe)
+        public void ApplyTo(Recipe recipe)
         {
             int tile = GetTile(Tile);
             recipe.RemoveTile(tile);

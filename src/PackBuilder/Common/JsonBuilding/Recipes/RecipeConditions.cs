@@ -1,17 +1,17 @@
-﻿using PackBuilder.Content.JsonBuilding.Recipes.Conditions;
+﻿using PackBuilder.Common.JsonBuilding.Recipes.Conditions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria;
 
-namespace PackBuilder.Content.JsonBuilding.Recipes;
+namespace PackBuilder.Common.JsonBuilding.Recipes;
 
 // The condition(s) needing to be met in order for this mod to activate.
 // If no conditions are specified, this mod will activate on ALL recipes.
 
 internal class RecipeConditions
 {
-    public List<RecipeCondition> Conditions = [];
+    public List<IRecipeCondition> Conditions = [];
 
     // All of these are available as set only properties so that the json parser
     // can continually build a list by specifying the same property multiple times.
@@ -20,8 +20,10 @@ internal class RecipeConditions
     // this way creates the cleaniest, most intuitive, and easiest implementation
     // for creating json files.
 
-    public RequiresIngredient ContainsItem { set => Conditions.Add(value); }
-    public CreatesResult CreatesItem { set => Conditions.Add(value); }
+    public CreatesResult CreatesResult { set => Conditions.Add(value); }
+    public RequiresIngredient RequiresIngredient { set => Conditions.Add(value); }
+    public RequiresRecipeGroup RequiresRecipeGroup { set => Conditions.Add(value); }
+    public RequiresTile RequiresTile { set => Conditions.Add(value); }
 
     /// <summary>
     /// Determines whether this <see cref="RecipeConditions"/> set applies to a given recipe.

@@ -1,15 +1,15 @@
-﻿using PackBuilder.Content.JsonBuilding.Recipes.Changes;
+﻿using PackBuilder.Common.JsonBuilding.Recipes.Changes;
 using System;
 using System.Collections.Generic;
 using Terraria;
 
-namespace PackBuilder.Content.JsonBuilding.Recipes;
+namespace PackBuilder.Common.JsonBuilding.Recipes;
 
 // The change(s) that will be applied to each of the recipes where conditions are met.
 
 internal class RecipeChanges
 {
-    public List<RecipeChange> Changes = [];
+    public List<IRecipeChange> Changes = [];
 
     // All of these are available as set only properties so that the json parser
     // can continually build a list by specifying the same property multiple times.
@@ -19,9 +19,17 @@ internal class RecipeChanges
     // for creating json files.
 
     public AddIngredient AddIngredient { set => Changes.Add(value); }
+    public AddRecipeGroup AddRecipeGroup { set => Changes.Add(value); }
+    public AddTile AddTile { set => Changes.Add(value); }
+
     public ChangeIngredient ChangeIngredient { set => Changes.Add(value); }
+    public ChangeRecipeGroup ChangeRecipeGroup { set => Changes.Add(value); }
     public ChangeResult ChangeResult { set => Changes.Add(value); }
+    public ChangeTile ChangeTile { set => Changes.Add(value); }
+
     public RemoveIngredient RemoveIngredient { set => Changes.Add(value); }
+    public RemoveRecipeGroup RemoveRecipeGroup { set => Changes.Add(value); }
+    public RemoveTile RemoveTile { set => Changes.Add(value); }
 
     /// <summary>
     /// Applies this <see cref="RecipeChanges"/> set to a given recipe.

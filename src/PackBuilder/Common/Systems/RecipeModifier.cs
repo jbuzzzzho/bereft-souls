@@ -1,11 +1,11 @@
 ﻿using Newtonsoft.Json;
-using PackBuilder.Content.JsonBuilding.Recipes;
+using PackBuilder.Common.JsonBuilding.Recipes;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Terraria.ModLoader;
 
-namespace PackBuilder.Content.Systems
+namespace PackBuilder.Common.Systems
 {
     internal class RecipeModifier : ModSystem
     {
@@ -31,7 +31,7 @@ namespace PackBuilder.Content.Systems
                 string rawJson = Encoding.Default.GetString(jsonEntry);
 
                 // Decode the json into a recipe mod.
-                RecipeMod recipeMod = JsonConvert.DeserializeObject<RecipeMod>(rawJson);
+                RecipeMod recipeMod = JsonConvert.DeserializeObject<RecipeMod>(rawJson)!;
 
                 // Apply the recipe mod.
                 recipeMod.Apply();

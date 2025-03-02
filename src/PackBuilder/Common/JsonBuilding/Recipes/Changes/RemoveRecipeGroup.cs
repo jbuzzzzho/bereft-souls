@@ -1,12 +1,12 @@
 ﻿using Terraria;
 
-namespace PackBuilder.Content.JsonBuilding.Recipes.Changes
+namespace PackBuilder.Common.JsonBuilding.Recipes.Changes
 {
-    internal class RemoveRecipeGroup : RecipeChange
+    internal class RemoveRecipeGroup : IRecipeChange
     {
         public required string Group;
 
-        public override void ApplyTo(Recipe recipe)
+        public void ApplyTo(Recipe recipe)
         {
             int id = GetRecipeGroup(Group);
             RecipeGroup group = RecipeGroup.recipeGroups[id];

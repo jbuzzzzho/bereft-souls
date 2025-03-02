@@ -1,17 +1,17 @@
 ﻿using Terraria;
 
-namespace PackBuilder.Content.JsonBuilding.Recipes.Changes
+namespace PackBuilder.Common.JsonBuilding.Recipes.Changes
 {
-    internal class AddRecipeGroup : RecipeChange
+    internal class AddRecipeGroup : IRecipeChange
     {
         public required string Group;
 
-        public int Stack = 1;
+        public int Count = 1;
 
-        public override void ApplyTo(Recipe recipe)
+        public void ApplyTo(Recipe recipe)
         {
             int id = GetRecipeGroup(Group);
-            recipe.AddRecipeGroup(id, Stack);
+            recipe.AddRecipeGroup(id, Count);
         }
     }
 }
