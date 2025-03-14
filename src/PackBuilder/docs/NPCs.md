@@ -90,7 +90,7 @@ And lastly, if we wanted to change the NPC's damage reduction in Calamity, we ca
 
 And just like that, we're done! If you head into the game and summon a slime, you should see it has the increased stats.
 
->>> ![image](https://github.com/user-attachments/assets/2965b896-5c08-4930-bb5e-f355861c8a92)
+![image](https://github.com/user-attachments/assets/2965b896-5c08-4930-bb5e-f355861c8a92)
 
 A full list of available changes and what value you should assign them can be found below. You can mix and match as many changes as you like - just make sure to follow the syntax above! Happy modpacking!
 
