@@ -110,6 +110,6 @@ A full list of available changes and what value you should assign them can be fo
 ### Calamity Mod (CalamityMod)
 | Change Name | Description | Acceptable Values | Example |
 | ----------- | ----------- | ----------------- | ------- |
-| DamageReduction | The amount that incoming damage is reduced to for this NPC. | Positive decimals | ![image](https://github.com/user-attachments/assets/5d7e803c-3a44-4e9f-aaf4-75560cc1babe) |
+| DamageReduction | The amount by which incoming damage is reduced for this NPC. | Positive decimals | ![image](https://github.com/user-attachments/assets/5d7e803c-3a44-4e9f-aaf4-75560cc1babe) |
 
 If there are any changes you would like to see support added for, whether it be from Vanilla or other mods, reach out to @nycro on Discord!
