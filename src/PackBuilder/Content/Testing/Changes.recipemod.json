@@ -2,7 +2,7 @@
   "Criteria": "All",
 
   "Conditions": {
-    "CreatesItem": {
+    "CreatesResult": {
       "Item": "Terraria/Zenith"
     }
   },
