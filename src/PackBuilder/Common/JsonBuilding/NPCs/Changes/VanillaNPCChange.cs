@@ -34,8 +34,14 @@ namespace PackBuilder.Common.JsonBuilding.NPCs.Changes
             }
 
             Delta(ref npc.damage, Damage);
+            npc.defDamage = npc.damage;
+
             Delta(ref npc.defense, Defense);
+            npc.defDefense = npc.defense;
+
             Delta(ref npc.lifeMax, Health);
+            npc.life = npc.lifeMax;
+
             DeltaF(ref npc.knockBackResist, KnockbackScaling);
             DeltaF(ref npc.npcSlots, NPCSlots);
         }

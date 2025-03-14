@@ -1,19 +1,29 @@
 ﻿using Newtonsoft.Json;
 using PackBuilder.Common.JsonBuilding.NPCs;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace PackBuilder.Common.Systems
 {
     internal class PackBuilderNPC : GlobalNPC
     {
-        public static List<NPCChanges>[] NPCModSets = null;
+        public static ImmutableDictionary<int, List<NPCChanges>> NPCModSets = null;
 
-        public override void SetDefaults(NPC entity) => NPCModSets[entity.type]?.ForEach(c => c.ApplyTo(entity));
+        public override void SetDefaults(NPC entity)
+        {
+            if (entity.netID >= 0 && (NPCModSets?.TryGetValue(entity.netID, out var value) ?? false))
+                value.ForEach(c => c.ApplyTo(entity));
+        }
+
+        public override void SetDefaultsFromNetId(NPC npc)
+        {
+            if (NPCModSets?.TryGetValue(npc.netID, out var value) ?? false)
+                value.ForEach(c => c.ApplyTo(npc));
+        }
     }
 
     internal class NPCModifier : ModSystem
@@ -55,8 +65,7 @@ namespace PackBuilder.Common.Systems
             }
 
             // Setup the factory for fast access to NPC lookup.
-            object[] factory = factorySets.SelectMany<KeyValuePair<int, List<NPCChanges>>, object>(kvp => [kvp.Key, kvp.Value]).ToArray();
-            PackBuilderNPC.NPCModSets = NPCID.Sets.Factory.CreateCustomSet<List<NPCChanges>>(null, inputs: factory);
+            PackBuilderNPC.NPCModSets = factorySets.ToImmutableDictionary();
         }
     }
 }
