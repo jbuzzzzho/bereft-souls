@@ -47,13 +47,36 @@ namespace PackBuilder.Core.Utils
             try
             {
                 if (mod == "Terraria")
-                    return (short)typeof(ItemID).GetField(name).GetRawConstantValue();
+                    return (short)typeof(ItemID).GetField(name)!.GetRawConstantValue()!;
 
                 return ModContent.Find<ModItem>(mod, name).Type;
             }
             catch
             {
                 throw new ArgumentException($"Item type \"{item}\" not found!", nameof(item));
+            }
+        }
+
+        /// <summary>
+        /// Gets the ID for a projectile based on its content path, accounting for both vanilla and modded entries.
+        /// </summary>
+        /// <param name="projectile"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException"></exception>
+        public static int GetProjectile(string projectile)
+        {
+            SplitModContent(projectile, out var mod, out var name);
+
+            try
+            {
+                if (mod == "Terraria")
+                    return (short)typeof(ProjectileID).GetField(name)!.GetRawConstantValue()!;
+
+                return ModContent.Find<ModProjectile>(mod, name).Type;
+            }
+            catch
+            {
+                throw new ArgumentException($"Projectile type \"{projectile}\" not found!", nameof(projectile));
             }
         }
 

@@ -27,7 +27,7 @@ namespace PackBuilder.Core.Systems
             // Collects ALL .itemmod.json files from all mods into a list.
             List<byte[]> jsonEntries = [];
 
-            // Collects the loaded NPC mods to pass to the set factory initialization.
+            // Collects the loaded item mods to pass to the set factory initialization.
             Dictionary<int, List<ItemChanges>> factorySets = [];
 
             foreach (Mod mod in ModLoader.Mods)
