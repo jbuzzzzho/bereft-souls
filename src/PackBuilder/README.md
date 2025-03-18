@@ -16,6 +16,7 @@ Currently supported features:
 - NPC stat changes
 
 Upcoming features:
+- NPC item drop changes
 - Item/Projectile stat changes
 - Modular quest book, designable from an in-game GUI
 
