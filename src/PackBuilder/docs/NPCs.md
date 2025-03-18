@@ -78,10 +78,12 @@ From here, we can start listing off our changes. When you want to change a value
 - Write a new value. This will assign the property to this new value.
 - Write a value prefixed with a `+`. This will increase the already in place value by your specified amount.
 - Write a value prefixed with a `-`. This will decrease the already in place value by your specified amount.
+- Write a value prefixed with a `x`. This will multiply the already in place value by your specified amount.
+> Note that some fields expect integers to be given as values. If you use decimals in these instances, whether it be setting the value directly or by performing an operation, the resulting numbers will be rounded towards 0.
 
 ![image](https://github.com/user-attachments/assets/952a26ff-6b8d-409e-8893-205938dcf234)
 
-If we wanted to buff the NPC's damage BY 10 points (ie. increase it by 10 points, not set it to 10), we could do this:
+If we wanted to buff the NPC's damage by 10 points (ie. increase it by 10 points, not set it to 10), we could do this:
 
 ![image](https://github.com/user-attachments/assets/a5ed443c-44e2-4cbd-96f8-85829b1a653d)
 
