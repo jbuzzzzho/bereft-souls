@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using Terraria.ModLoader;
 
-namespace PackBuilder.Common.Systems
+namespace PackBuilder.Core.Systems
 {
     internal class RecipeModifier : ModSystem
     {

@@ -3,7 +3,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace PackBuilder.Common.Utils
+namespace PackBuilder.Core.Utils
 {
     internal static partial class ModUtils
     {

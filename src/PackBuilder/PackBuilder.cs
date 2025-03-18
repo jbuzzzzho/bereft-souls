@@ -1,4 +1,4 @@
-global using static PackBuilder.Common.Utils.ModUtils;
+global using static PackBuilder.Core.Utils.ModUtils;
 using Terraria.ModLoader;
 
 namespace PackBuilder

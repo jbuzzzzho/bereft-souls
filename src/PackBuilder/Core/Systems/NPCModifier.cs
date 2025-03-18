@@ -7,11 +7,11 @@ using System.Text;
 using Terraria;
 using Terraria.ModLoader;
 
-namespace PackBuilder.Common.Systems
+namespace PackBuilder.Core.Systems
 {
     internal class PackBuilderNPC : GlobalNPC
     {
-        public static ImmutableDictionary<int, List<NPCChanges>> NPCModSets = null;
+        public static ImmutableDictionary<int, List<NPCChanges>>? NPCModSets = null;
 
         public override void SetDefaults(NPC entity)
         {
