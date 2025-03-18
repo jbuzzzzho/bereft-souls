@@ -23,6 +23,9 @@ namespace PackBuilder.Common.JsonBuilding.NPCs.Changes
                 else if (adjustment.StartsWith('-'))
                     field += float.Parse(adjustment);
 
+                else if (adjustment.StartsWith('x'))
+                    field *= float.Parse(adjustment.Substring(1));
+
                 else
                     field = float.Parse(adjustment);
             }
