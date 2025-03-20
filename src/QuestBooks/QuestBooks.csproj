@@ -1,7 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
 	<!-- Import tModLoader mod properties -->
-	<Import Project="..\tModLoader.targets" />
+	<Import Condition="Exists('..\tModLoader.targets')" Project="..\tModLoader.targets"/>
+	<Import Condition="Exists('..\..\..\tModLoader.targets')" Project="..\..\..\tModLoader.targets"/>
 
 	<!-- General -->
 	<PropertyGroup>
