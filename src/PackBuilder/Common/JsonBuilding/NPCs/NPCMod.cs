@@ -6,6 +6,8 @@ namespace PackBuilder.Common.JsonBuilding.NPCs
     {
         public List<string> NPCs = [];
 
+        public required string NPC { set => NPCs.Add(value); }
+
         public required NPCChanges Changes { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 {
-	"NPCs": ["Terraria/BlueSlime", "Terraria/GreenSlime"],
+	"NPC": "Terraria/BlueSlime",
+	"NPC": "Terraria/GreenSlime",
 	
 	"Changes": {
 		"Terraria": {
